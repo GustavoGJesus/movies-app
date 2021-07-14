@@ -12,24 +12,25 @@ function App() {
   const [searchValue, setSearchValue] = useState('')
   //API
   const getMovieRequest = async () =>{
-    const url = "http://www.omdbapi.com/?s=avengers wars&apikey=bc7b2df0"
+    const url = `http://www.omdbapi.com/?s=${searchValue}&apikey=bc7b2df0`
 
     const response = await fetch(url);
     const responseJson = await response.json();
-
-    console.log(responseJson);
-    setMovies(responseJson.Search)
+    
+    if(responseJson.Search){
+      setMovies(responseJson.Search)
+    } 
   }
   useEffect(() =>{
-    getMovieRequest();
-  }, []);
+    getMovieRequest(searchValue);
+  }, [searchValue]);
 
   return (
     <>
       <div className="container-fluid movie-app">
-        <div className="row">
+        <div className="row d-flex align-items-center mt-4 mb-4">
           <MovieListHeading heading="movies"/>
-          <SearchBox />
+          <SearchBox  searchValue={searchValue} setSearchValue={setSearchValue} />
         </div>
         <div className="row">
         <MovieList movies = { movies} />
